@@ -1,0 +1,59 @@
+### Installation Steps
+
+Follow these steps to install the QuikDB SDK globally using your preferred package manager.
+
+<CodeGroup>
+
+```bash npm
+npm install -g quikdb-cli-beta
+```
+
+```bash yarn
+yarn global add quikdb-cli-beta
+```
+
+</CodeGroup>
+
+> **Note:** Installing globally allows you to access the `quikdb` command from any directory.
+
+---
+
+### Verify Installation
+
+After installation, verify that the SDK is installed correctly by checking its version:
+
+```bash
+quikdb --version
+```
+
+**Expected Output:**
+
+```
+quikdb-cli-beta version 1.0.0
+```
+
+If you see the version number as shown above, the QuikDB SDK has been installed successfully!
+
+---
+
+### Additional Notes
+
+- **Permissions:** If you encounter permission issues while installing globally, you might need to use `sudo` (for Unix-based systems) or run your terminal as an administrator (for Windows). For example:
+
+  ```bash
+  sudo npm install -g quikdb-cli-beta
+  ```
+
+- **Environment Variables:** Ensure that your system's PATH includes the directory where global `npm` or `yarn` packages are installed. This is typically handled automatically, but if you encounter issues accessing the `quikdb` command, you may need to adjust your PATH manually.
+
+- **Updating the SDK:** To update the QuikDB SDK to the latest version, you can run:
+
+  ```bash
+  npm update -g quikdb-cli-beta
+  ```
+
+  or
+
+  ```bash
+  yarn global upgrade quikdb-cli-beta
+  ```

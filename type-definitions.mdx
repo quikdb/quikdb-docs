@@ -1,0 +1,561 @@
+QuikDB SDK provides a robust set of TypeScript type definitions to ensure type safety and enhance developer experience. Below are the available types and their usages:
+
+### Field
+
+**Description:** Represents a field within a schema.
+
+**Usage:**
+
+```typescript
+interface Field {
+  name: string;
+  fieldType: 'Text' | 'Int' | 'Bool';
+  unique: boolean;
+}
+```
+
+**Example:**
+
+```typescript
+const fields: Field[] = [
+  { name: 'username', unique: false, fieldType: 'Text' },
+  { name: 'age', unique: false, fieldType: 'Int' },
+  { name: 'email', unique: true, fieldType: 'Text' },
+];
+```
+
+---
+
+### CreateSchemaArgs
+
+**Description:** Arguments required to create a new schema.
+
+**Usage:**
+
+```typescript
+type CreateSchemaArgs = [string, Field[], string[]];
+```
+
+**Example:**
+
+```typescript
+const createSchemaArgs: CreateSchemaArgs = ['UserSchema', fields, ['email']];
+```
+
+---
+
+### ResultBool
+
+**Description:** Represents the result of operations that return a boolean status.
+
+**Usage:**
+
+```typescript
+interface ResultBool {
+  ok?: boolean;
+  err?: string;
+}
+```
+
+**Example:**
+
+```typescript
+const result: ResultBool = await quikdb.callCanisterMethod(CanisterMethod.CreateSchema, args);
+if (result.ok) {
+  console.log('Schema created successfully.');
+} else {
+  console.error(`Error: ${result.err}`);
+}
+```
+
+---
+
+### GetSchemaArgs
+
+**Description:** Arguments required to retrieve a specific schema.
+
+**Usage:**
+
+```typescript
+type GetSchemaArgs = [string];
+```
+
+**Example:**
+
+```typescript
+const getSchemaArgs: GetSchemaArgs = ['UserSchema'];
+const schema: Schema[] = await quikdb.callCanisterMethod(CanisterMethod.GetSchema, getSchemaArgs);
+```
+
+---
+
+### Schema
+
+**Description:** Represents the structure of a schema.
+
+**Usage:**
+
+```typescript
+interface Schema {
+  schemaName: string;
+  fields: Field[];
+  indexes: string[];
+}
+```
+
+**Example:**
+
+```typescript
+const schema: Schema = {
+  schemaName: 'UserSchema',
+  fields: [...],
+  indexes: ['email'],
+};
+```
+
+---
+
+### DeleteSchemaArgs
+
+**Description:** Arguments required to delete a specific schema.
+
+**Usage:**
+
+```typescript
+type DeleteSchemaArgs = [string];
+```
+
+**Example:**
+
+```typescript
+const deleteSchemaArgs: DeleteSchemaArgs = ['UserSchema'];
+const deleteResult: ResultBool = await quikdb.callCanisterMethod(CanisterMethod.DeleteSchema, deleteSchemaArgs);
+```
+
+---
+
+### ListSchemasArgs
+
+**Description:** Arguments required to list all schemas.
+
+**Usage:**
+
+```typescript
+type ListSchemasArgs = [];
+```
+
+**Example:**
+
+```typescript
+const listSchemasArgs: ListSchemasArgs = [];
+const schemas: string[] = await quikdb.callCanisterMethod(CanisterMethod.ListSchemas, listSchemasArgs);
+```
+
+---
+
+### CreateRecordDataArgs
+
+**Description:** Arguments required to create a new record within a schema.
+
+**Usage:**
+
+```typescript
+type CreateRecordDataArgs = [string, DBRecord];
+```
+
+**Example:**
+
+```typescript
+const record: DBRecord = {
+  id: 'record1',
+  fields: [
+    ['username', 'testuser'],
+    ['age', '30'],
+    ['email', 'testuser@example.com'],
+  ],
+};
+const createRecordArgs: CreateRecordDataArgs = ['UserSchema', record];
+const insertResult: ResultBool = await quikdb.callCanisterMethod(CanisterMethod.CreateRecordData, createRecordArgs);
+```
+
+---
+
+### GetRecordArgs
+
+**Description:** Arguments required to retrieve a specific record.
+
+**Usage:**
+
+```typescript
+type GetRecordArgs = [string, string];
+```
+
+**Example:**
+
+```typescript
+const getRecordArgs: GetRecordArgs = ['UserSchema', 'record1'];
+const recordResult: ResultString = await quikdb.callCanisterMethod(CanisterMethod.GetRecord, getRecordArgs);
+```
+
+---
+
+### GetAllRecordsArgs
+
+**Description:** Arguments required to retrieve all records within a schema.
+
+**Usage:**
+
+```typescript
+type GetAllRecordsArgs = [string];
+```
+
+**Example:**
+
+```typescript
+const getAllRecordsArgs: GetAllRecordsArgs = ['UserSchema'];
+const allRecords: ResultRecords = await quikdb.callCanisterMethod(CanisterMethod.GetAllRecords, getAllRecordsArgs);
+```
+
+---
+
+### UpdateDataArgs
+
+**Description:** Arguments required to update specific fields of a record.
+
+**Usage:**
+
+```typescript
+type UpdateDataArgs = [string, string, [string, string][]];
+```
+
+**Example:**
+
+```typescript
+const updatedFields: [string, string][] = [['age', '31']];
+const updateDataArgs: UpdateDataArgs = ['UserSchema', 'record1', updatedFields];
+const updateResult: ResultBool = await quikdb.callCanisterMethod(CanisterMethod.UpdateData, updateDataArgs);
+```
+
+---
+
+### DeleteDataArgs
+
+**Description:** Arguments required to delete a specific record.
+
+**Usage:**
+
+```typescript
+type DeleteDataArgs = [string, string];
+```
+
+**Example:**
+
+```typescript
+const deleteDataArgs: DeleteDataArgs = ['UserSchema', 'record1'];
+const deleteResult: ResultBool = await quikdb.callCanisterMethod(CanisterMethod.DeleteRecord, deleteDataArgs);
+```
+
+---
+
+### GetOwnerArgs
+
+**Description:** Arguments required to retrieve the owner principal.
+
+**Usage:**
+
+```typescript
+type GetOwnerArgs = [];
+```
+
+**Example:**
+
+```typescript
+const getOwnerArgs: GetOwnerArgs = [];
+const owner: Principal = await quikdb.callCanisterMethod(CanisterMethod.GetOwner, getOwnerArgs);
+```
+
+---
+
+### InitOwnerArgs
+
+**Description:** Arguments required to initialize the owner.
+
+**Usage:**
+
+```typescript
+type InitOwnerArgs = [];
+```
+
+**Example:**
+
+```typescript
+const initOwnerArgs: InitOwnerArgs = [];
+const initOwnerResult: ResultBool = await quikdb.callCanisterMethod(CanisterMethod.InitOwner, initOwnerArgs);
+```
+
+---
+
+### GetMetricsArgs
+
+**Description:** Arguments required to retrieve metrics for a schema.
+
+**Usage:**
+
+```typescript
+type GetMetricsArgs = [string];
+```
+
+**Example:**
+
+```typescript
+const getMetricsArgs: GetMetricsArgs = ['UserSchema'];
+const metrics: ResultTuple = await quikdb.callCanisterMethod(CanisterMethod.GetMetrics, getMetricsArgs);
+if (metrics.ok) {
+  const [count, size] = metrics.ok;
+  console.log(`Record Count: ${count}, Total Size: ${size}`);
+} else {
+  console.error(`Error: ${metrics.err}`);
+}
+```
+
+---
+
+### GetRecordSizesArgs
+
+**Description:** Arguments required to retrieve the sizes of records within a schema.
+
+**Usage:**
+
+```typescript
+type GetRecordSizesArgs = [string];
+```
+
+**Example:**
+
+```typescript
+const getRecordSizesArgs: GetRecordSizesArgs = ['UserSchema'];
+const recordSizes: ResultStrings = await quikdb.callCanisterMethod(CanisterMethod.GetRecordSizes, getRecordSizesArgs);
+if (recordSizes.ok) {
+  recordSizes.ok.forEach(size => console.log(`Record Size: ${size}`));
+} else {
+  console.error(`Error: ${recordSizes.err}`);
+}
+```
+
+---
+
+### QueryByIndexArgs
+
+**Description:** Arguments required to query records by an indexed field.
+
+**Usage:**
+
+```typescript
+type QueryByIndexArgs = [string, string, string];
+```
+
+**Example:**
+
+```typescript
+const queryByIndexArgs: QueryByIndexArgs = ['UserSchema', 'username', 'testuser'];
+const queryResult: ResultRecords = await quikdb.callCanisterMethod(CanisterMethod.SearchByIndex, queryByIndexArgs);
+```
+
+---
+
+### SearchByIndexArgs
+
+**Description:** Arguments required to search records by an indexed field.
+
+**Usage:**
+
+```typescript
+type SearchByIndexArgs = [string, string, string];
+```
+
+**Example:**
+
+```typescript
+const searchByIndexArgs: SearchByIndexArgs = ['UserSchema', 'status', 'active'];
+const searchResult: ResultRecords = await quikdb.callCanisterMethod(CanisterMethod.SearchByIndex, searchByIndexArgs);
+```
+
+---
+
+### SearchByMultipleFieldsArgs
+
+**Description:** Arguments required to search records by multiple fields.
+
+**Usage:**
+
+```typescript
+type SearchByMultipleFieldsArgs = [string, [string, string][]];
+```
+
+**Example:**
+
+```typescript
+const searchByMultipleFieldsArgs: SearchByMultipleFieldsArgs = [
+  'UserSchema',
+  [
+    ['email', 'user2@example.com'],
+    ['status', 'inactive'],
+  ],
+];
+const searchMultipleResult: ResultRecords = await quikdb.callCanisterMethod(
+  CanisterMethod.SearchByMultipleFields,
+  searchByMultipleFieldsArgs
+);
+```
+
+---
+
+### DBRecord
+
+**Description:** Represents a database record within a schema.
+
+**Usage:**
+
+```typescript
+interface DBRecord {
+  id: string;
+  fields: [string, string][];
+}
+```
+
+**Example:**
+
+```typescript
+const record: DBRecord = {
+  id: 'record1',
+  fields: [
+    ['username', 'testuser'],
+    ['age', '30'],
+    ['email', 'testuser@example.com'],
+  ],
+};
+```
+
+---
+
+### NoOfSchemaArgs
+
+**Description:** Arguments required to retrieve the number of schemas.
+
+**Usage:**
+
+```typescript
+type NoOfSchemaArgs = [];
+```
+
+**Example:**
+
+```typescript
+const noOfSchemaArgs: NoOfSchemaArgs = [];
+const noOfSchemas: number | ResultBool = await quikdb.callCanisterMethod(CanisterMethod.NoOfSchema, noOfSchemaArgs);
+```
+
+---
+
+### ResultRecords
+
+**Description:** Represents the result containing multiple records.
+
+**Usage:**
+
+```typescript
+interface ResultRecords {
+  ok?: DBRecord[];
+  err?: string;
+}
+```
+
+**Example:**
+
+```typescript
+const allRecords: ResultRecords = await quikdb.callCanisterMethod(CanisterMethod.GetAllRecords, getAllRecordsArgs);
+if (allRecords.ok) {
+  allRecords.ok.forEach(record => console.log(record));
+} else {
+  console.error(`Error: ${allRecords.err}`);
+}
+```
+
+---
+
+### ResultString
+
+**Description:** Represents the result containing a single string.
+
+**Usage:**
+
+```typescript
+interface ResultString {
+  ok?: string;
+  err?: string;
+}
+```
+
+**Example:**
+
+```typescript
+const recordResult: ResultString = await quikdb.callCanisterMethod(CanisterMethod.GetRecord, getRecordArgs);
+if (recordResult.ok) {
+  console.log('Record Details:', recordResult.ok);
+} else {
+  console.error(`Error: ${recordResult.err}`);
+}
+```
+
+---
+
+### ResultStrings
+
+**Description:** Represents the result containing multiple strings.
+
+**Usage:**
+
+```typescript
+interface ResultStrings {
+  ok?: string[];
+  err?: string;
+}
+```
+
+**Example:**
+
+```typescript
+const recordSizes: ResultStrings = await quikdb.callCanisterMethod(CanisterMethod.GetRecordSizes, getRecordSizesArgs);
+if (recordSizes.ok) {
+  recordSizes.ok.forEach(size => console.log(`Record Size: ${size}`));
+} else {
+  console.error(`Error: ${recordSizes.err}`);
+}
+```
+
+---
+
+### ResultTuple
+
+**Description:** Represents the result containing a tuple of values.
+
+**Usage:**
+
+```typescript
+type ResultTuple = {
+  ok?: [bigint, bigint];
+  err?: string;
+};
+```
+
+**Example:**
+
+```typescript
+const metrics: ResultTuple = await quikdb.callCanisterMethod(CanisterMethod.GetMetrics, getMetricsArgs);
+if (metrics.ok) {
+  const [count, size] = metrics.ok;
+  console.log(`Record Count: ${count}, Total Size: ${size}`);
+} else {
+  console.error(`Error: ${metrics.err}`);
+}
+```

@@ -1,0 +1,381 @@
+QuikDB SDK interacts with the QuikDB backend through various canister methods.
+
+### InitOwner
+
+**Description:** Initializes the owner of the canister. This is typically the first method called to set up ownership.
+
+**Parameters:** None
+
+**Usage:**
+
+```typescript
+const initOwnerResult: ResultBool = await quikdb.callCanisterMethod(CanisterMethod.InitOwner, []);
+if (initOwnerResult.ok) {
+  console.log('Owner initialized successfully.');
+} else {
+  console.error(`Error: ${initOwnerResult.err}`);
+}
+```
+
+---
+
+### CreateSchema
+
+**Description:** Creates a new schema within the database. A schema defines the structure of records, including fields and indexes.
+
+**Parameters:**
+
+- `CreateSchemaArgs`: `[string, Field[], string[]]`
+  - `string`: Name of the schema.
+  - `Field[]`: Array of field definitions.
+  - `string[]`: Array of fields to index.
+
+**Usage:**
+
+```typescript
+const createSchemaArgs: CreateSchemaArgs = ['UserSchema', fields, ['email']];
+const createSchemaResult: ResultBool = await quikdb.callCanisterMethod(CanisterMethod.CreateSchema, createSchemaArgs);
+if (createSchemaResult.ok) {
+  console.log('Schema created successfully.');
+} else {
+  console.error(`Error: ${createSchemaResult.err}`);
+}
+```
+
+---
+
+### GetSchema
+
+**Description:** Retrieves the details of a specific schema.
+
+**Parameters:**
+
+- `GetSchemaArgs`: `[string]`
+  - `string`: Name of the schema to retrieve.
+
+**Usage:**
+
+```typescript
+const getSchemaArgs: GetSchemaArgs = ['UserSchema'];
+const schema: Schema[] = await quikdb.callCanisterMethod(CanisterMethod.GetSchema, getSchemaArgs);
+if (schema.length > 0) {
+  console.log('Schema Details:', schema[0]);
+} else {
+  console.error('Schema not found.');
+}
+```
+
+---
+
+### ListSchemas
+
+**Description:** Lists all existing schemas within the database.
+
+**Parameters:**
+
+- `ListSchemasArgs`: `[]`
+
+**Usage:**
+
+```typescript
+const listSchemasArgs: ListSchemasArgs = [];
+const schemas: string[] = await quikdb.callCanisterMethod(CanisterMethod.ListSchemas, listSchemasArgs);
+console.log('Available Schemas:', schemas);
+```
+
+---
+
+### DeleteSchema
+
+**Description:** Deletes a specific schema from the database.
+
+**Parameters:**
+
+- `DeleteSchemaArgs`: `[string]`
+  - `string`: Name of the schema to delete.
+
+**Usage:**
+
+```typescript
+const deleteSchemaArgs: DeleteSchemaArgs = ['UserSchema'];
+const deleteSchemaResult: ResultBool = await quikdb.callCanisterMethod(CanisterMethod.DeleteSchema, deleteSchemaArgs);
+if (deleteSchemaResult.ok) {
+  console.log('Schema deleted successfully.');
+} else {
+  console.error(`Error: ${deleteSchemaResult.err}`);
+}
+```
+
+---
+
+### CreateRecordData
+
+**Description:** Inserts a new record into a specified schema.
+
+**Parameters:**
+
+- `CreateRecordDataArgs`: `[string, DBRecord]`
+  - `string`: Name of the schema.
+  - `DBRecord`: Record data to insert.
+
+**Usage:**
+
+```typescript
+const record: DBRecord = {
+  id: 'record1',
+  fields: [
+    ['username', 'testuser'],
+    ['age', '30'],
+    ['email', 'testuser@example.com'],
+  ],
+};
+const createRecordArgs: CreateRecordDataArgs = ['UserSchema', record];
+const insertResult: ResultBool = await quikdb.callCanisterMethod(CanisterMethod.CreateRecordData, createRecordArgs);
+if (insertResult.ok) {
+  console.log('Record inserted successfully.');
+} else {
+  console.error(`Error: ${insertResult.err}`);
+}
+```
+
+---
+
+### GetRecord
+
+**Description:** Retrieves a specific record from a schema.
+
+**Parameters:**
+
+- `GetRecordArgs`: `[string, string]`
+  - `string`: Name of the schema.
+  - `string`: ID of the record to retrieve.
+
+**Usage:**
+
+```typescript
+const getRecordArgs: GetRecordArgs = ['UserSchema', 'record1'];
+const recordResult: ResultString = await quikdb.callCanisterMethod(CanisterMethod.GetRecord, getRecordArgs);
+if (recordResult.ok) {
+  console.log('Record Details:', recordResult.ok);
+} else {
+  console.error(`Error: ${recordResult.err}`);
+}
+```
+
+---
+
+### GetAllRecords
+
+**Description:** Retrieves all records within a specified schema.
+
+**Parameters:**
+
+- `GetAllRecordsArgs`: `[string]`
+  - `string`: Name of the schema.
+
+**Usage:**
+
+```typescript
+const getAllRecordsArgs: GetAllRecordsArgs = ['UserSchema'];
+const allRecords: ResultRecords = await quikdb.callCanisterMethod(CanisterMethod.GetAllRecords, getAllRecordsArgs);
+if (allRecords.ok) {
+  allRecords.ok.forEach(record => console.log(record));
+} else {
+  console.error(`Error: ${allRecords.err}`);
+}
+```
+
+---
+
+### UpdateData
+
+**Description:** Updates specific fields of an existing record.
+
+**Parameters:**
+
+- `UpdateDataArgs`: `[string, string, [string, string][]]`
+  - `string`: Name of the schema.
+  - `string`: ID of the record to update.
+  - `[string, string][]`: Array of field updates.
+
+**Usage:**
+
+```typescript
+const updatedFields: [string, string][] = [['age', '31']];
+const updateDataArgs: UpdateDataArgs = ['UserSchema', 'record1', updatedFields];
+const updateResult: ResultBool = await quikdb.callCanisterMethod(CanisterMethod.UpdateData, updateDataArgs);
+if (updateResult.ok) {
+  console.log('Record updated successfully.');
+} else {
+  console.error(`Error: ${updateResult.err}`);
+}
+```
+
+---
+
+### DeleteRecord
+
+**Description:** Deletes a specific record from a schema.
+
+**Parameters:**
+
+- `DeleteDataArgs`: `[string, string]`
+  - `string`: Name of the schema.
+  - `string`: ID of the record to delete.
+
+**Usage:**
+
+```typescript
+const deleteDataArgs: DeleteDataArgs = ['UserSchema', 'record1'];
+const deleteResult: ResultBool = await quikdb.callCanisterMethod(CanisterMethod.DeleteRecord, deleteDataArgs);
+if (deleteResult.ok) {
+  console.log('Record deleted successfully.');
+} else {
+  console.error(`Error: ${deleteResult.err}`);
+}
+```
+
+---
+
+### GetOwner
+
+**Description:** Retrieves the principal ID of the owner.
+
+**Parameters:**
+
+- `GetOwnerArgs`: `[]`
+
+**Usage:**
+
+```typescript
+const getOwnerArgs: GetOwnerArgs = [];
+const owner: Principal = await quikdb.callCanisterMethod(CanisterMethod.GetOwner, getOwnerArgs);
+console.log('Owner Principal ID:', owner.toText());
+```
+
+---
+
+### GetMetrics
+
+**Description:** Retrieves metrics related to a specific schema.
+
+**Parameters:**
+
+- `GetMetricsArgs`: `[string]`
+  - `string`: Name of the schema.
+
+**Usage:**
+
+```typescript
+const getMetricsArgs: GetMetricsArgs = ['UserSchema'];
+const metrics: ResultTuple = await quikdb.callCanisterMethod(CanisterMethod.GetMetrics, getMetricsArgs);
+if (metrics.ok) {
+  const [count, size] = metrics.ok;
+  console.log(`Record Count: ${count}, Total Size: ${size}`);
+} else {
+  console.error(`Error: ${metrics.err}`);
+}
+```
+
+---
+
+### GetRecordSizes
+
+**Description:** Retrieves the sizes of records within a schema.
+
+**Parameters:**
+
+- `GetRecordSizesArgs`: `[string]`
+  - `string`: Name of the schema.
+
+**Usage:**
+
+```typescript
+const getRecordSizesArgs: GetRecordSizesArgs = ['UserSchema'];
+const recordSizes: ResultStrings = await quikdb.callCanisterMethod(CanisterMethod.GetRecordSizes, getRecordSizesArgs);
+if (recordSizes.ok) {
+  recordSizes.ok.forEach(size => console.log(`Record Size: ${size}`));
+} else {
+  console.error(`Error: ${recordSizes.err}`);
+}
+```
+
+---
+
+### SearchByIndex
+
+**Description:** Searches for records based on an indexed field.
+
+**Parameters:**
+
+- `SearchByIndexArgs`: `[string, string, string]`
+  - `string`: Name of the schema.
+  - `string`: Index field name.
+  - `string`: Value to search for.
+
+**Usage:**
+
+```typescript
+const searchByIndexArgs: SearchByIndexArgs = ['UserSchema', 'status', 'active'];
+const searchResult: ResultRecords = await quikdb.callCanisterMethod(CanisterMethod.SearchByIndex, searchByIndexArgs);
+if (searchResult.ok) {
+  searchResult.ok.forEach(record => console.log(record));
+} else {
+  console.error(`Error: ${searchResult.err}`);
+}
+```
+
+---
+
+### SearchByMultipleFields
+
+**Description:** Searches for records based on multiple field criteria.
+
+**Parameters:**
+
+- `SearchByMultipleFieldsArgs`: `[string, [string, string][]]`
+  - `string`: Name of the schema.
+  - `[string, string][]`: Array of field-value pairs to search for.
+
+**Usage:**
+
+```typescript
+const searchByMultipleFieldsArgs: SearchByMultipleFieldsArgs = [
+  'UserSchema',
+  [
+    ['email', 'user2@example.com'],
+    ['status', 'inactive'],
+  ],
+];
+const searchMultipleResult: ResultRecords = await quikdb.callCanisterMethod(
+  CanisterMethod.SearchByMultipleFields,
+  searchByMultipleFieldsArgs
+);
+if (searchMultipleResult.ok) {
+  searchMultipleResult.ok.forEach(record => console.log(record));
+} else {
+  console.error(`Error: ${searchMultipleResult.err}`);
+}
+```
+
+---
+
+### NoOfSchema
+
+**Description:** Retrieves the total number of schemas present in the database.
+
+**Parameters:**
+
+- `NoOfSchemaArgs`: `[]`
+
+**Usage:**
+
+```typescript
+const noOfSchemaArgs: NoOfSchemaArgs = [];
+const noOfSchemas: number | ResultBool = await quikdb.callCanisterMethod(CanisterMethod.NoOfSchema, noOfSchemaArgs);
+if (typeof noOfSchemas === 'number') {
+  console.log(`Total Schemas: ${noOfSchemas}`);
+} else if (noOfSchemas.err) {
+  console.error(`Error: ${noOfSchemas.err}`);
+}
+```

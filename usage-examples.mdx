@@ -1,0 +1,110 @@
+
+##### Practical examples demonstrating how to use the QuikDB SDK.
+
+### Creating and Retrieving a Schema
+
+```typescript
+import { QuikDB, CreateSchemaArgs, GetSchemaArgs, CanisterMethod } from 'quikdb-cli-beta/v1/sdk';
+
+// Initialize QuikDB instance
+let quikdb = new QuikDB();
+
+(async () => {
+  await quikdb.init();
+
+  // Define schema details
+  const schemaName = 'UserSchema';
+  const fields = [
+    { name: 'username', unique: false, fieldType: 'Text' },
+    { name: 'age', unique: false, fieldType: 'Int' },
+    { name: 'email', unique: true, fieldType: 'Text' },
+  ];
+  const indexes = ['email'];
+
+  // Create schema
+  const args: CreateSchemaArgs = [schemaName, fields, indexes];
+  const createResult = await quikdb.callCanisterMethod(CanisterMethod.CreateSchema, args);
+  console.log('Create Schema Result:', createResult);
+
+  // Retrieve schema
+  const getSchemaArgs: GetSchemaArgs = [schemaName];
+  const schema = await quikdb.callCanisterMethod(CanisterMethod.GetSchema, getSchemaArgs);
+  console.log('Retrieved Schema:', schema);
+})();
+```
+
+---
+
+### Managing Records
+
+```typescript
+import { QuikDB, CanisterMethod, DBRecord, CreateRecordDataArgs, GetRecordArgs, UpdateDataArgs, DeleteDataArgs } from 'quikdb-cli-beta/v1/sdk';
+
+let quikdb = new QuikDB();
+
+(async () => {
+  await quikdb.init();
+
+  // Insert a new record
+  const record: DBRecord = {
+    id: 'record1',
+    fields: [
+      ['username', 'testuser'],
+      ['age', '30'],
+      ['email', 'testuser@example.com'],
+    ],
+  };
+  const createRecordArgs: CreateRecordDataArgs = ['UserSchema', record];
+  const insertResult = await quikdb.callCanisterMethod(CanisterMethod.CreateRecordData, createRecordArgs);
+  console.log('Insert Record Result:', insertResult);
+
+  // Retrieve the record
+  const getRecordArgs: GetRecordArgs = ['UserSchema', 'record1'];
+  const retrievedRecord = await quikdb.callCanisterMethod(CanisterMethod.GetRecord, getRecordArgs);
+  console.log('Retrieved Record:', retrievedRecord);
+
+  // Update the record
+  const updatedFields: [string, string][] = [['age', '31']];
+  const updateDataArgs: UpdateDataArgs = ['UserSchema', 'record1', updatedFields];
+  const updateResult = await quikdb.callCanisterMethod(CanisterMethod.UpdateData, updateDataArgs);
+  console.log('Update Record Result:', updateResult);
+
+  // Delete the record
+  const deleteDataArgs: DeleteDataArgs = ['UserSchema', 'record1'];
+  const deleteResult = await quikdb.callCanisterMethod(CanisterMethod.DeleteRecord, deleteDataArgs);
+  console.log('Delete Record Result:', deleteResult);
+})();
+```
+
+---
+
+### Querying Data
+
+```typescript
+import { QuikDB, CanisterMethod, SearchByIndexArgs, SearchByMultipleFieldsArgs } from 'quikdb-cli-beta/v1/sdk';
+
+let quikdb = new QuikDB();
+
+(async () => {
+  await quikdb.init();
+
+  // Search by index
+  const searchByIndexArgs: SearchByIndexArgs = ['UserSchema', 'status', 'active'];
+  const searchResult = await quikdb.callCanisterMethod(CanisterMethod.SearchByIndex, searchByIndexArgs);
+  console.log('Search By Index Result:', searchResult);
+
+  // Search by multiple fields
+  const searchByMultipleFieldsArgs: SearchByMultipleFieldsArgs = [
+    'UserSchema',
+    [
+      ['email', 'user2@example.com'],
+      ['status', 'inactive'],
+    ],
+  ];
+  const searchMultipleResult = await quikdb.callCanisterMethod(
+    CanisterMethod.SearchByMultipleFields,
+    searchByMultipleFieldsArgs
+  );
+  console.log('Search By Multiple Fields Result:', searchMultipleResult);
+})();
+```

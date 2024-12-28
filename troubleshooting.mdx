@@ -1,0 +1,34 @@
+###### Solutions to common issues encountered when using the QuikDB SDK.
+
+Encountering issues? Here's how to resolve some common problems when working with the QuikDB SDK.
+
+<AccordionGroup>
+  <Accordion title="SDK Initialization Fails">
+    **Solution:**
+    - Ensure that your configuration files are correctly set up and encrypted.
+    - Verify that the `config.json` file exists in the expected directory.
+    - Check your internet connection to ensure the SDK can communicate with the canister.
+  </Accordion>
+  
+  <Accordion title="Cannot Connect to Canister">
+    **Solution:**
+    - Verify that the canister URL in your configuration is correct.
+    - Ensure that the canister is running and accessible.
+    - Check for network issues or firewall settings that might be blocking the connection.
+  </Accordion>
+  
+  <Accordion title="Method Invocation Errors">
+    **Solution:**
+    - Ensure that you are passing the correct arguments as per the method's definition.
+    - Verify that the schema and records you are referencing exist.
+    - Consult the error message for specific details and adjust your method call accordingly.
+  </Accordion>
+  
+  <Accordion title="Duplicate Schema or Record">
+    **Solution:**
+    - Ensure that the schema or record you are trying to create does not already exist.
+    - If it does, consider updating the existing schema or record instead of creating a duplicate.
+  </Accordion>
+</AccordionGroup>
+
+For further assistance, refer to our [Support Page](#).
