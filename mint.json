@@ -27,7 +27,7 @@
   },
   "navigation": [
     {
-      "group": "Documentation",
+      "group": "JS-SDK",
       "pages": [
         "introduction",
         "installation",
