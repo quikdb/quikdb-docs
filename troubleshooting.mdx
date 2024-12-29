@@ -3,18 +3,20 @@
 Encountering issues? Here's how to resolve some common problems when working with the QuikDB SDK.
 
 <AccordionGroup>
-  <Accordion title="SDK Initialization Fails">
+  <Accordion title="SDK Installation Fails">
     **Solution:**
+    - the js sdk is only tested on mac environment. you might encounter challenges with windows or linux. If so please use the python sdk.
     - Ensure that your configuration files are correctly set up and encrypted.
-    - Verify that the `config.json` file exists in the expected directory.
+    - Verify that the `config` file exists in the expected directory.
     - Check your internet connection to ensure the SDK can communicate with the canister.
   </Accordion>
   
   <Accordion title="Cannot Connect to Canister">
     **Solution:**
-    - Verify that the canister URL in your configuration is correct.
+    - Verify that the canister URL exist in your configuration dir.
     - Ensure that the canister is running and accessible.
     - Check for network issues or firewall settings that might be blocking the connection.
+    - run `quikdb install` command again.
   </Accordion>
   
   <Accordion title="Method Invocation Errors">
