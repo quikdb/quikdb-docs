@@ -27,7 +27,7 @@
   },
   "navigation": [
     {
-      "group": "JS-SDK",
+      "group": "BETA-SDK",
       "pages": [
         "introduction",
         "installation",
